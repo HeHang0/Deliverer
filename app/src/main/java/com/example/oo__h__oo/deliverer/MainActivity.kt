@@ -1,6 +1,7 @@
 package com.example.oo__h__oo.deliverer
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -18,6 +19,7 @@ import java.io.File
 import java.util.*
 import android.widget.Toast
 import com.example.oo__h__oo.deliverer.adapter.SmsListAdapter
+import com.example.oo__h__oo.deliverer.service.MyService
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //启动Service
+        var intent = Intent().setClass(this,MyService().javaClass)
+        startService(intent)
+        /*
         setContentView(R.layout.activity_main)
         ActivityCompat.requestPermissions(this@MainActivity, arrayOf(
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -38,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 android.Manifest.permission.ACCESS_NETWORK_STATE,
                 android.Manifest.permission.READ_PHONE_STATE
         ), 1)
+
         makeStatusBarTransparent()
         listView = findViewById(R.id.listView)
         try {
@@ -49,8 +57,8 @@ class MainActivity : AppCompatActivity() {
             val item = adapterView.getItemAtPosition(i) as Message
             AlertView(item.messagerTypeDescribe + item.name, item.body, "确定", null, null, this, AlertView.Style.Alert, null).setCancelable(true).show()
         })
-
         Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
+        */
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
