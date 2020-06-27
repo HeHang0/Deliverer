@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">传递</string>
+    <string name="email_config">邮箱配置</string>
+    <string name="receive_user_name">接收邮件的邮箱</string>
+    <string name="send_user_name">发送邮件的邮箱</string>
+    <string name="send_user_password">发送邮件的邮箱密码</string>
+    <string name="send_host">发送邮件的服务器地址</string>
+    <string name="smtp_yeah_net">smtp.yeah.net</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="save_log">保存日志</string>
 </resources>
