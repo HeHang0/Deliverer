@@ -28,9 +28,9 @@ class EmailSender(extDir: String) {
         alreadConfig = !(receiveUserName.isBlank() || sendUserName.isBlank() || sendHostAddress.isBlank())
     }
 
-    fun sendEmail(myReceiver: MyReceiver,myMessage: Message) {
+    fun sendEmail(myReceiver: MyReceiver,myMessage: Message): Boolean {
         if (!alreadConfig){
-            return
+            return false
         }
         val properties = Properties()
         properties.setProperty("mail.smtp.auth", "true")// 服务器需要认证
@@ -65,12 +65,13 @@ class EmailSender(extDir: String) {
             Transport.send(mailMessage)
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
             myReceiver.writeAllText("${dateFormat.format(Date())}.txt","已发送！")
+            return true
 
         }catch (e: Exception){
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
             myReceiver.writeAllText("${dateFormat.format(Date())}.txt",e.message.toString())
             e.printStackTrace();
-
+            return false
         }
     }
 }

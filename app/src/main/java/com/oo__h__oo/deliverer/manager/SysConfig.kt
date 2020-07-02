@@ -12,6 +12,9 @@ class SysConfig {
         const val SEND_USERNAME = "sun"
         const val SEND_PASSWORD = "spw"
         const val SEND_HOST_ADDRESS = "sha"
+        const val SEND_SERVER_CHAN_KEY = "ssck"
+        const val SEND_EMAIL = "se"
+        const val SEND_WECHAT = "sw"
         const val SAVE_LOG = "sl"
 
 
@@ -20,6 +23,9 @@ class SysConfig {
                        sendUserName: String,
                        sendPassword: String,
                        sendHostAddress: String,
+                       sendServerChanKey: String,
+                       sendEmail: Boolean,
+                       sendWechat: Boolean,
                        saveLog: Boolean) : String{
             val emailRegex = Regex("^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$")
 
@@ -44,6 +50,9 @@ class SysConfig {
                             writeFile(dataDirFile.absolutePath, SEND_USERNAME, sendUserName) &&
                             writeFile(dataDirFile.absolutePath, SEND_PASSWORD, sendPassword) &&
                             writeFile(dataDirFile.absolutePath, SEND_HOST_ADDRESS, sendHostAddress) &&
+                            writeFile(dataDirFile.absolutePath, SEND_SERVER_CHAN_KEY, sendServerChanKey) &&
+                            writeBoolFile(dataDirFile.absolutePath, SEND_EMAIL, sendEmail) &&
+                            writeBoolFile(dataDirFile.absolutePath, SEND_WECHAT, sendWechat) &&
                             writeBoolFile(dataDirFile.absolutePath, SAVE_LOG, saveLog))){
                 return "出了点问题！"
             }

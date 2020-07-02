@@ -9,6 +9,7 @@ import android.telephony.TelephonyManager
 import com.oo__h__oo.deliverer.MainActivity
 import com.oo__h__oo.deliverer.manager.EmailSender
 import com.oo__h__oo.deliverer.manager.Message
+import com.oo__h__oo.deliverer.manager.ServerChanSender
 import com.oo__h__oo.deliverer.manager.SysConfig
 import java.io.BufferedWriter
 import java.io.File
@@ -21,22 +22,21 @@ class MyReceiver : BroadcastReceiver() {
 
     private var dataDir = ""
     private var saveLog = false
+    private var senEmail = false
+    private var senWechat = false
     override fun onReceive(context: Context, intent: Intent) {
         if (dataDir.isBlank()){
             dataDir = context.getExternalFilesDir("")?.absolutePath ?: ""
         }
         try {
             if (intent.action != null) {
+                var message: Message? = null
                 val extDir = context.getExternalFilesDir("")?.absolutePath ?: ""
                 saveLog = SysConfig.getLogConfig(extDir, SysConfig.SAVE_LOG)
+                senEmail = SysConfig.getLogConfig(extDir, SysConfig.SEND_EMAIL)
+                senWechat = SysConfig.getLogConfig(extDir, SysConfig.SEND_WECHAT)
                 if (intent.action == SMS_RECEIVED_ACTION) {
-                    val message = getMessageFromIntent(intent)
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
-                    writeAllText("${dateFormat.format(message.date)}.txt",message.address + ": " + message.body)
-//                Toast.makeText(context, message.address + ": " + message.body, Toast.LENGTH_LONG).show();
-                    Thread(Runnable {
-                        EmailSender(extDir).sendEmail(this,message)
-                    }).start()
+                    message = getMessageFromIntent(intent)
                     val mIntent = Intent(MainActivity.ACTION_INTENT_RECEIVER)
                     context.sendBroadcast(mIntent)
                 }else if (intent.action == PHONE_STATE){
@@ -44,14 +44,16 @@ class MyReceiver : BroadcastReceiver() {
                     if (state == RINGING){
                         val phoneNumber = intent.getStringExtra(EXTRA_INCOMING_NUMBER)
                                 ?: return
-                        val message = Message(phoneNumber,phoneNumber, state, Date(), Message.MessageType.Phone, Message.MessageFromType.Receive)
-//                    Toast.makeText(context, message.address + ": " + message.body, Toast.LENGTH_LONG).show();
-                        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
-                        writeAllText("${dateFormat.format(message.date)}.txt",message.address + ": " + message.body)
-                        Thread(Runnable {
-                            EmailSender(extDir).sendEmail(this,message)
-                        }).start()
+                        message = Message(phoneNumber,phoneNumber, state, Date(), Message.MessageType.Phone, Message.MessageFromType.Receive)
                     }
+                }
+                if (message != null){
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+                    writeAllText("${dateFormat.format(message.date)}.txt",message.address + ": " + message.body)
+                    Thread(Runnable {
+                        val senOK = senWechat && ServerChanSender(extDir).sendWeChatMsg(this,message)
+                        !senOK && senEmail && EmailSender(extDir).sendEmail(this,message)
+                    }).start()
                 }
             }
         }catch (e:Exception){

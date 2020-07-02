@@ -47,12 +47,41 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"/>
-
-    <CheckBox
-        android:id="@+id/saveLog"
+    <EditText
+        android:id="@+id/sendServerChanKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save_log"
-        android:layout_marginStart="15dp"/>
+        android:hint="@string/server_chan_sckey"
+        android:importantForAutofill="no"
+        android:inputType="textUri"
+        tools:ignore="TextFields"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/sendEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_email"
+            android:layout_marginStart="15dp"/>
+
+        <CheckBox
+            android:id="@+id/sendWechat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_wechat"
+            android:layout_marginStart="15dp"/>
+        <CheckBox
+            android:id="@+id/saveLog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_log"
+            android:layout_marginStart="15dp"/>
+    </LinearLayout>
 
 </LinearLayout>

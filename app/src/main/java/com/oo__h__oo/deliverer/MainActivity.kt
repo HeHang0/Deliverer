@@ -209,11 +209,17 @@ class MainActivity : AppCompatActivity() {
         val sendUserNameET = view.findViewById<EditText>(R.id.sendUserName)
         val sendPasswordET = view.findViewById<EditText>(R.id.sendPassword)
         val sendHostAddressET = view.findViewById<EditText>(R.id.sendHostAddress)
+        val sendServerChanKeyET = view.findViewById<EditText>(R.id.sendServerChanKey)
+        val sendEmailCB = view.findViewById<CheckBox>(R.id.sendEmail)
+        val sendWechatCB = view.findViewById<CheckBox>(R.id.sendWechat)
         val saveLogCB = view.findViewById<CheckBox>(R.id.saveLog)
         receiveUserNameET.setText(SysConfig.getConfig(extDir, SysConfig.RECEIVE_USERNAME))
         sendUserNameET.setText(SysConfig.getConfig(extDir, SysConfig.SEND_USERNAME))
         sendPasswordET.setText(SysConfig.getConfig(extDir, SysConfig.SEND_PASSWORD))
         sendHostAddressET.setText(SysConfig.getConfig(extDir, SysConfig.SEND_HOST_ADDRESS))
+        sendServerChanKeyET.setText(SysConfig.getConfig(extDir, SysConfig.SEND_SERVER_CHAN_KEY))
+        sendEmailCB.isChecked = SysConfig.getLogConfig(extDir, SysConfig.SEND_EMAIL)
+        sendWechatCB.isChecked = SysConfig.getLogConfig(extDir, SysConfig.SEND_WECHAT)
         saveLogCB.isChecked = SysConfig.getLogConfig(extDir, SysConfig.SAVE_LOG)
         AlertDialog.Builder(this)
                 .setIcon(R.drawable.ic_launcher)
@@ -226,10 +232,13 @@ class MainActivity : AppCompatActivity() {
                         val sendUserName = sendUserNameET.text.toString().trim { it <= ' ' }
                         val sendPassword = sendPasswordET.text.toString().trim { it <= ' ' }
                         val sendHostAddress = sendHostAddressET.text.toString().trim { it <= ' ' }
+                        val sendServerChanKey = sendServerChanKeyET.text.toString().trim { it <= ' ' }
+                        val sendEmail = sendEmailCB.isChecked
+                        val sendWechat = sendWechatCB.isChecked
                         val saveLog = saveLogCB.isChecked
 
                         val saveResult = SysConfig.saveConfig(extDir,
-                                receiveUserName, sendUserName, sendPassword, sendHostAddress, saveLog)
+                                receiveUserName, sendUserName, sendPassword, sendHostAddress, sendServerChanKey, sendEmail, sendWechat, saveLog)
                         if (saveResult.isBlank()){
                             Toast.makeText(this@MainActivity, "可以了", Toast.LENGTH_SHORT).show()
                         }else{
